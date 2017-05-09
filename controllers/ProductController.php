@@ -1,13 +1,13 @@
 <?php
-include_once ROOT. '/models/Product.php';
-include_once ROOT. '/components/Controller.php';
+include_once (ROOT.'/components/Controller.php');
+include_once (ROOT.'/models/Products.php');
 
 class ProductController extends Controller
 {
     public function actionIndex()
     {
         $productList = array();
-        $modelProduct = Product::getProductList();
+        $modelProduct = Products::getProductList();
 
         $this->render($modelProduct,
             array(

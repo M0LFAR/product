@@ -1,18 +1,12 @@
 <?php
 
 
-
-class Product
+class Products
 {
-
-    /** Returns single news items with specified id
-     * @rapam integer &id
-     */
-
     public static function getProductItemByID($id)
     {
         $id = intval($id);
-            $db = SingleDb::getConnection();
+            $db = Db::getConnection();
             $result = $db->query('SELECT * FROM news WHERE id=' . $id);
 
             /*$result->setFetchMode(PDO::FETCH_NUM);*/
@@ -23,12 +17,10 @@ class Product
             return $newsItem;
         }
 
-    /**
-     * Returns an array of news items
-     */
+
     public static function getProductList() {
 
-        $db = SingleDb::getConnection();
+        $db = Db::getConnection();
         $result  = array();
         $result = $db->query('SELECT * FROM `products`;');
         return $result;

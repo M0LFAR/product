@@ -11,7 +11,7 @@ class Controller
     }
 
     private function getLayout(){
-        $fileNameLayout = $this->layoutName? $this->layoutName : $this->config['defaultLayout'].'.php';
+        $fileNameLayout =( $this->layoutName? $this->layoutName : $this->config['defaultLayout']).'.php';
         return  $this->config['layoutPath'].$fileNameLayout;
     }
 
@@ -22,14 +22,12 @@ class Controller
         $pathView = $pathView  ?  $pathView: $pathName;
         $fileNameView = ($viewName ? $viewName : $this->config['defaultView'] ) . '.php';
 
-       return include_once ($this->config['allViewPath'].$pathView .$fileNameView);
+        include ($this->config['allViewPath'].$pathView .$fileNameView);
 
     }
 
     protected function render($model, array $view = array()){
-
-         $content = $this->getView($view['nameView'], $view['pathView'],$model);
-        //include_once ($this->getLayout());
+        include_once ($this->getLayout());
 
     }
 

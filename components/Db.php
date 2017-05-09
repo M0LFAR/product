@@ -1,12 +1,13 @@
 <?php
 
-class SingleDb
+class Db
 {
-
-		public static function getConnection()
+    		public static function getConnection()
 		{
 			$params = include(ROOT . '/config/db_params.php');
 			$ver = "mysql:host={$params['host']};dbname={$params['dbname']}";
-			return  new PDO($ver, $params['user'], $params['password']);
+            $db = new PDO($ver, $params['user'], $params['password']);
+            $db->exec("set names utf8");
+			return $db;
 		}
 }

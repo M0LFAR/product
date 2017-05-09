@@ -1,14 +1,12 @@
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ua">
 
 <head>
 
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
 
     <title>Mysql</title>
 
@@ -44,7 +42,8 @@
 <div id="wrapper">
 
     <?=require_once (ROOT.'/view/widget/nav_bar.php');?>
-    <?=$content;?>
+
+    <?php $this->getView($view['nameView'], $view['pathView'],$model);?>
 
 </div>
 <!-- jQuery -->
