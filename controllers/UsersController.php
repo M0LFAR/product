@@ -1,22 +1,22 @@
 <?php
-include_once (ROOT.'/components/Controller.php');
-include_once (ROOT.'/models/Users.php');
+use  components\Controller;
+use  models\Users;
 
 class UsersController extends Controller
 {
     public function actionLogin()
     {
+
         $this->layoutName = 'clear';
-        if(isset($_POST['submit']) &&  Users::validationPassword($_POST['idUser'], $_POST['password']))
+
+        if( Users::getUserId() || (isset($_POST['submit']) &&  Users::validationPassword( $_POST['idUser'], $_POST['password'])))
         {
-                header("Location: /site/");
-
-            }
+            header("Location: /product/");
+        }
             else {
+                $model['usersList'] = Users::getUsersList();
 
-                $usersList = Users::getUsersList();
-
-                    $this->render($usersList,
+                $this->render($model,
                         array(
                             'nameView' => 'login'
                         )
@@ -24,14 +24,29 @@ class UsersController extends Controller
 
             }
     }
-    public function actionView()
+    public function actionMessages()
     {
-        $usersList = 1;
-        $this->render($usersList,
+
+        $idUser = Users::getUserId();
+
+        if (isset($_POST['submit']) && !empty($_POST['message'])){
+            Users::insertMessages($idUser,$_POST['message']);
+        }
+
+
+        $messages = Users::getListMessages();
+        $this->render($messages,
             array(
-                'nameView'=>'login'
+                'nameView'=>'messages'
             )
         );
+    }
+
+
+
+    public  function actionLogout(){
+        Users::logOut();
+        header("Location: /login/");
     }
 
 }

@@ -1,4 +1,7 @@
 <?php
+namespace  components;
+
+use models\Users;
 
 class Controller
 {
@@ -28,7 +31,13 @@ class Controller
 
     protected function render($model, array $view = array()){
         include_once ($this->getLayout());
+    }
 
+    protected function goHome(){
+        //if(Users::isGuest())
+          //  header("Location: /login/");
+        //else
+            header("Location: /product/");
     }
 
 }

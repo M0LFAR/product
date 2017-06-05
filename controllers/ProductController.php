@@ -1,12 +1,12 @@
 <?php
-include_once (ROOT.'/components/Controller.php');
-include_once (ROOT.'/models/Products.php');
+use components\Controller;
+use models\Products;
 
 class ProductController extends Controller
 {
     public function actionIndex()
     {
-        $productList = array();
+
         $modelProduct = Products::getProductList();
 
         $this->render($modelProduct,
@@ -18,14 +18,23 @@ class ProductController extends Controller
         return true;
     }
 
+    public function actionEdit($id){
+        var_dump($id);
+    }
+
     public function actionView($id)
     {
-        if ($id) {
-            $newsItem = News::getNewsItemByID($id);
-        }
+        if(!isset($id)) return false;
+
+        $modelProduct = Products::getProduct($id);
+        //d($modelProduct);
+        $this->render($modelProduct,
+            array(
+                'nameView'=>'productEdit'
+            )
+        );
 
         return true;
-
     }
 
 }

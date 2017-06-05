@@ -14,8 +14,7 @@
                 </div>
                 <!-- /.panel-heading -->
                 <div class="panel-body">
-                    <?//=include(SITE_PATH.'view/widget/table.php');?>
-                    <?=include(SITE_PATH.'view/widget/table.php');?>
+
                 </div>
                 <!-- /.panel-body -->
             </div>

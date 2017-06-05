@@ -11,10 +11,9 @@ class Products extends Migration
                 CREATE TABLE `units` (
                   `id_units` int(11) NOT NULL,
                   `id_parents` int(11) DEFAULT NULL,
-                  `name` varchar(30) NOT NULL,
-                  `is_material` tinyint(1) NOT NULL DEFAULT '0'
+                  `proportion` int(33) DEFAULT NULL,
+                  `name` varchar(30) NOT NULL
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-                
                 
                 
                 --
@@ -28,10 +27,10 @@ class Products extends Migration
                 -- Дамп даних таблиці `units`
                 --
                 
-               INSERT INTO `units` (`id_units`, `id_parents`, `name`, `is_material`) VALUES (1, NULL, 'кг', '0');
-               INSERT INTO `units` (`id_units`, `id_parents`, `name`, `is_material`) VALUES (4, 1, 'г', '1000');
-               INSERT INTO `units` (`id_units`, `id_parents`, `name`, `is_material`) VALUES (2, NULL, 'лт', '0');
-               INSERT INTO `units` (`id_units`, `id_parents`, `name`, `is_material`) VALUES (3, 2, 'мЛт', '1000');
+               INSERT INTO `units` (`id_units`, `id_parents`, `name`, `proportion`) VALUES (1, NULL, 'кг', '0');
+               INSERT INTO `units` (`id_units`, `id_parents`, `name`, `proportion`) VALUES (4, 1, 'г', '1000');
+               INSERT INTO `units` (`id_units`, `id_parents`, `name`, `proportion`) VALUES (2, NULL, 'лт', '0');
+               INSERT INTO `units` (`id_units`, `id_parents`, `name`,  `proportion`) VALUES (3, 2, 'мЛт', '1000');
         ");
 
         $this->db->query("
@@ -68,7 +67,14 @@ class Products extends Migration
                           `product_id` int(11) NOT NULL,
                           `date_change` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
                           `price_in_time` int(11) NOT NULL
-                        ) ENGINE=InnoDB DEFAULT CHARSET=utf8;'
+                        ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+                        
+                          --
+            -- AUTO_INCREMENT для таблиці `change_price`
+            --
+            ALTER TABLE `products`
+              MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+                        '
         );
 
         $this->db->query('

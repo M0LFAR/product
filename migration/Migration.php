@@ -1,9 +1,9 @@
 <?php
+use components\Db;
 
 abstract class Migration
 {
     public $db;
-
 
     abstract function createTable();
     abstract function createKey();
@@ -18,8 +18,9 @@ abstract class Migration
     function  __construct(){
         $this->db = Db::getConnection();
     }
+
     public function  migrateUP(){
-        $this->createTable();
+        $a = $this->createTable();
         $this->createKey();
         $this->createTrigger();
         $this->createProcedure();

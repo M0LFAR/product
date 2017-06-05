@@ -18,13 +18,13 @@
                         <fieldset>
                             <div class="form-group">
                                 <select class="form-control " name="idUser">
-                                    <?php while ($user = $model->fetch()):?>
+                                    <?php foreach($model['usersList'] as $user ):?>
                                     <option value="<?=$user['id']?>"><?=$user['name']?></option>
-                                    <?php endwhile;?>
+                                    <?php endforeach;?>
                                 </select>
                             </div>
                             <div class="form-group">
-                                <input class="form-control" placeholder="Пароль" name="password" type="password" value="">
+                                <input class="form-control" placeholder="Пароль" name="password" type="password" value="" required>
                             </div>
                             <div class="checkbox">
                                 <label>
@@ -44,7 +44,5 @@
 <footer class="footer">
     <div class="container">
         <p class="pull-left">© ЧНУ 2017</p>
-
-        <p class="pull-right">"Комп'ютерні науки"</p>
     </div>
 </footer>

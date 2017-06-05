@@ -11,7 +11,6 @@ class Router
 		$this->routes = include($routesPath);
 	}
 
-// Return type
 
 	private function getURI()
 	{
@@ -23,20 +22,14 @@ class Router
 	public function run()
 	{
 		$uri = $this->getURI();
-
+        $find = false;
 		foreach ($this->routes as $uriPattern => $path) {
 
-			if(preg_match("~$uriPattern~", $uri)) {
+			if(preg_match("~$uriPattern~", $uri) && $find = true) {
 
-/*				echo "<br>Где ищем (запрос, который набрал пользователь): ".$uri;
-				echo "<br>Что ищем (совпадение из правила): ".$uriPattern;
-				echo "<br>Кто обрабатывает: ".$path; */
-
-				// Получаем внутренний путь из внешнего согласно правилу.
 
 				$internalRoute = preg_replace("~$uriPattern~", $path, $uri);
 
-/*				echo '<br>Нужно сформулировать: '.$internalRoute.'<br>'; */
 
 				$segments = explode('/', $internalRoute);
 
@@ -55,15 +48,16 @@ class Router
 				}
 
 				$controllerObject = new $controllerName;
-				/*$result = $controllerObject->$actionName($parameters); - OLD VERSION */
-				/*$result = call_user_func(array($controllerObject, $actionName), $parameters);*/
-				$result = call_user_func_array(array($controllerObject, $actionName), $parameters);
-				
-				if ($result != null) {
-					break;
-				}
-			}
 
+				$resultCallFunction = call_user_func_array(array($controllerObject, $actionName), $parameters);
+
+				if ($resultCallFunction) throw new Exception('Не коректно сконфігурований шлях');
+
+			}
 		}
+
+		if(!$find){
+            echo 'Запит на не існуючу сторінку';
+        }
 	}
 }

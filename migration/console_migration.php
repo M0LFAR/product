@@ -37,10 +37,32 @@ switch ($do){
                 $purchases->migrateUP();
                 $sale->migrateUP();
                 $users->migrateUP();
+
+                $db = \components\Db::getConnection();
+                $db->query("INSERT INTO `users` (`id`, `name`, `password`, `status_id`, `user_hash`) VALUES (NULL, 'Адміністратор', '5f4dcc3b5aa765d61d8327deb882cf99', 1, NULL);");
+                $db->query("INSERT INTO `users` (`id`, `name`, `password`, `status_id`, `user_hash`) VALUES (NULL, 'Складовщик', '5f4dcc3b5aa765d61d8327deb882cf99', 2, NULL);");
+                $db->query("INSERT INTO `users` (`id`, `name`, `password`, `status_id`, `user_hash`) VALUES (NULL, 'Касир', '5f4dcc3b5aa765d61d8327deb882cf99', 3, NULL);");
+
+               $db->exec("
+            delimiter $$
+                CREATE FUNCTION IS_VALID_PASSWORD(idUser INT, comePassword VARCHAR(36)) RETURNS BOOLEAN 
+                COMMENT 'Перевірка на відповідність пароля' 
+                BEGIN 
+                    DECLARE setPassword VARCHAR(36);
+                    DECLARE result BOOLEAN DEFAULT FALSE;
+                     SELECT `password` FROM `users` WHERE `id`= idUser INTO setPassword; 
+                     SELECT MD5(comePassword)  = setPassword INTO result;
+                    RETURN result;
+                END; $$
+                delimiter ;
+        ");
+
+              //  $stmt->execute();
                 break;
             } catch (PDOException $e) {
                 echo 'Помилка при створенні даних',  $e->getMessage(), "\n";
             }
+
         }
         case 'down':{
             $users->migrateDOWN();

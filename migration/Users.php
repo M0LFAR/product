@@ -1,5 +1,4 @@
 <?php
-
 class Users extends Migration
 {
     public function createTable(){
@@ -19,14 +18,9 @@ class Users extends Migration
                 
                 ALTER TABLE `users`
                 MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-                
-                
-                INSERT INTO `users` (`id`, `name`, `password`, `status_id`) VALUES (NULL, 'Адміністратор', MD5('password'), '1');
-                INSERT INTO `users` (`id`, `name`, `password`, `status_id`) VALUES (NULL, 'Складовщик', MD5('password'), '2');
-                INSERT INTO `users` (`id`, `name`, `password`, `status_id`) VALUES (NULL, 'Касир', MD5('password'), '3');
         ");
 
-        $this->db->query("
+      $return = $this->db->query("
                     --
                     -- Структура таблиці `notes`
                     --
@@ -35,9 +29,11 @@ class Users extends Migration
                       `user_id` int(11) NOT NULL,
                       `date` int(11) NOT NULL,
                       `content` varchar(255) NOT NULL
-                    ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+                    ) 
             ");
 
+
+      return $return;
     }
 
 
@@ -48,6 +44,9 @@ class Users extends Migration
 
 
     public function createKey(){
+        $this->db->query("
+        ALTER TABLE `notes` ADD PRIMARY KEY(`id`);
+        ");
 
         $this->db->query("
             --
@@ -74,6 +73,7 @@ class Users extends Migration
           ADD KEY `notes_user_id` (`user_id`);
            
         ");
+
         $this->db->query("
             --
             -- Обмеження зовнішнього ключа таблиці `notes`
@@ -102,39 +102,54 @@ class Users extends Migration
     }
 
 
-    public function createProcedure(){
-             $this->db->query("
-         CREATE PROCEDURE `GET_USERS_LIST`() COMMENT 'Повертає список користувачів та їх id' 
-            NOT DETERMINISTIC READS SQL DATA SQL SECURITY DEFINER 
-            SELECT `id`, `name` FROM `users`;
-         ");
+            public function createProcedure(){
+                $this->db->query("
+                 CREATE PROCEDURE `GET_USERS_LIST`() COMMENT 'Повертає список користувачів та їх id' 
+                    NOT DETERMINISTIC READS SQL DATA SQL SECURITY DEFINER 
+                    SELECT `id`, `name` FROM `users`;
+                 ");
 
 
-        $this->db->query("
-         CREATE PROCEDURE `SET_HASH`(userId INT, come_hash VARCHAR(36)) COMMENT 'Встановлює рфі' 
-            NOT DETERMINISTIC READS SQL DATA SQL SECURITY DEFINER 
-            UPDATE `users` SET `user_hash`= come_hash WHERE `id`=userId;
-         ");
+                $this->db->query("
+                 CREATE PROCEDURE `SET_HASH`(userId INT, come_hash VARCHAR(36)) COMMENT 'Встановлює рфі' 
+                    NOT DETERMINISTIC READS SQL DATA SQL SECURITY DEFINER 
+                    UPDATE `users` SET `user_hash`= come_hash WHERE `id`=userId;
+                 ");
 
-            $this->db->query("delimiter $$
-                CREATE FUNCTION IS_VALID_PASSWORD(idUser INT, comePassword VARCHAR(36)) RETURNS BOOLEAN 
-                COMMENT 'Перевірка на відповідність пароля' 
-                BEGIN 
-                    DECLARE setPassword VARCHAR(36);
-                    DECLARE result BOOLEAN DEFAULT FALSE;
-                     SELECT `password` FROM `users` WHERE `id`= idUser INTO setPassword; 
-                     SELECT MD5(comePassword)  = setPassword INTO result;
-                    RETURN result;
-                END; $$
-                delimiter ;
-        ");
+                 $this->db->exec("
+                    delimiter $$
+                        CREATE FUNCTION IS_VALID_PASSWORD(idUser INT, comePassword VARCHAR(36)) RETURNS BOOLEAN 
+                        COMMENT 'Перевірка на відповідність пароля' 
+                        BEGIN 
+                            DECLARE setPassword VARCHAR(36);
+                            DECLARE result BOOLEAN DEFAULT FALSE;
+                             SELECT `password` FROM `users` WHERE `id`= idUser INTO setPassword; 
+                             SELECT MD5(comePassword)  = setPassword INTO result;
+                            RETURN result;
+                        END; $$
+                        delimiter ;
+                ");
+
+
+                $this->db->exec("(delimiter $$
+                        CREATE FUNCTION GET_ROLE_BY_ID(idUser INT) RETURNS INT 
+                        COMMENT 'Повертаємо роль користувача' 
+                        BEGIN 
+                            DECLARE role INT;
+                             SELECT `status_id` FROM `users` WHERE `id`= idUser LIMIT 1 INTO role; 
+                            RETURN role;
+                        END; $$
+                        delimiter ;)
+                ");
     }
+
 
     public function dropProcedure(){
         $this->db->query("DROP PROCEDURE  IF EXISTS `GET_USERS_LIST`;");
         $this->db->query("DROP PROCEDURE  IF EXISTS `SET_HASH`;");
 
         $this->db->query("DROP FUNCTION  IF EXISTS `IS_VALID_PASSWORD`");
+        $this->db->query("DROP FUNCTION  IF EXISTS `GET_ROLE_BY_ID`");
     }
 
 }
