@@ -38,10 +38,9 @@
 
     <!-- jQuery -->
     <script src="/web/vendor/jquery/jquery.min.js"></script>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.bundle.js"></script>
-
     <link rel="stylesheet" href="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
+
+
 </head>
 
 <body>
@@ -151,7 +150,7 @@
         chart.render();
     }
 </script>
-<script type="text/javascript" src="/assets/script/canvasjs.min.js"></script>
+
 
 <!-- Bootstrap Core JavaScript -->
 <script src="/web/vendor/bootstrap/js/bootstrap.min.js"></script>
@@ -166,7 +165,32 @@
 
 <!-- Custom Theme JavaScript -->
 <script src="/web/dist/js/sb-admin-2.js"></script>
+<script src="/web/js/main.js"></script>
 
+<script type="text/javascript">
+    window.onload = function () {
+        var chart = new CanvasJS.Chart("chartContainer", {
+            title: {
+                text: "Статистика продаж"
+            },
+            data: [{
+                type: "column",
+                dataPoints: [
+                    { y: 45, label: "Помідор" },
+                    { y: 31, label: "Апельсие" },
+                    { y: 52, label: "Огірок" },
+                    { y: 10, label: "Перець болгарський" },
+                ]
+            }]
+        });
+        chart.render();
+    }
+</script>
+
+<script src="/web/js/canvasjs.min.js"></script>
+
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
 
 <!-- Page-Level Demo Scripts - Tables - Use for reference -->

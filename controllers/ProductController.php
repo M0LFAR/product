@@ -1,12 +1,12 @@
 <?php
 use components\Controller;
 use models\Products;
+use models\Users;
 
 class ProductController extends Controller
 {
     public function actionIndex()
     {
-
         $modelProduct = Products::getProductList();
 
         $this->render($modelProduct,
@@ -24,15 +24,7 @@ class ProductController extends Controller
 
     public function actionView($id)
     {
-        if(!isset($id)) return false;
 
-        $modelProduct = Products::getProduct($id);
-        //d($modelProduct);
-        $this->render($modelProduct,
-            array(
-                'nameView'=>'productEdit'
-            )
-        );
 
         return true;
     }

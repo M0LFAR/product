@@ -4,8 +4,14 @@ namespace  view\widget;
 class Table
 {
     private $head=[];
-    private $row=[];
-    private $typeField=['title', 'button', 'href'];
+    private $rows=[];
+    private $fields=[];
+
+
+
+    public function __construct(array $fields){
+        $this->fields = $fields;
+    }
 
     public function field(array $params){
 
@@ -18,52 +24,49 @@ class Table
         else
             throw new \Exception('Не коректно передані дані для віджета');
 
-       // var_dump($params['value'], $params['label']);
 
-        if(in_array($params['type'], $this->typeField) && isset($params['value'])){
-
-            $i=0;
-            foreach ( $params['value'] as $val) {
-
-                array_push($this->row[$i], [[$params['type'] =>$val]]);
-                $i++;
-            }
-
-        }
-        else{
-            array_push($this->row, ['title' => $params['value']]);
+        $params=is_array($params['key'])?$params['key']:$params;
+        foreach ($this->fields as $id=>$field) {
+            $this->rows[$id][] = $this->inRow($params, $id);
         }
     }
 
 
+    private function inRow($arrayPars,$idFields){
+        if(is_array($arrayPars[0])) { //якщо дочірні елементи є масивами
+            $value='';
+                foreach ($arrayPars as $parsRowArray)
+                    $value.= $this->inRow($parsRowArray,$idFields);
+        }else{
+                $value = $this->fields[$idFields][$arrayPars['key']];
+
+                if (isset($arrayPars['value'])) {
+
+                    $value = preg_replace('/{{key}}/', $value, $arrayPars['value']);
+                }
+        }
+        return $value;
+    }
+
     public function echo(){
-        $head='';
-        $element ='';
+        $head = '';
+        $elementsRow ='';
 
         foreach ($this->head as $str)
         {
             $head.= "<th>$str</th>";
         }
 
-        foreach ($this->row as $id=>$field)
-        {
-            foreach ($field as $type=>$values){
+        foreach ($this->rows as $row) {
+            $valueRow = "";
 
-                switch ($type){
-                    case 'title':{
-                        foreach ($values as $val){
-                            $element.= '<td class="center">'. $val.' </td>';
-                            }
-                        break;
-                    }
-                    case 'href':{
-                        $element.= '<a href=""><i class="'.$val['icon'].'" aria-hidden="true"></i>'.$val['value'].'</a>';
-                        break;
-                    }
-                }
+            foreach ($row as $str) {
+                $valueRow .= "<td>".$str."</td>";
+
             }
+            $elementsRow.="<tr>".$valueRow."</tr>";
+            unset($valueRow);
         }
-
 
         echo  '<table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
                               <thead>
@@ -73,7 +76,7 @@ class Table
                      </thead>
                                 <tbody>
                                 <tr class="odd gradeX">
-                                '.$element.'
+                                '.$elementsRow.'
                                 </tr>
                                 </tbody>
                             </table>';

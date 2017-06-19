@@ -1,7 +1,7 @@
 <?php
 return array(
 			'host' => 'localhost',
-			'dbname' => 'mysql.nbrz.ru',
-			'user' => 'zhurak',
-			'password' => 'mysqlpassword',
+			'dbname' => 'dbname',
+			'user' => 'user_name',
+			'password' => 'password',
 );

@@ -5,7 +5,6 @@ class SiteController extends Controller
 {
     public function actionIndex()
     {
-        var_dump(\models\Users::getUserId());
         $this->goHome();
     }
 
@@ -38,6 +37,19 @@ class SiteController extends Controller
         $this->render($modelProduct,
             array(
                 'nameView'=>'statistic'
+            )
+        );
+    }
+
+    public function actionAccessDenied(){
+        $this->layoutName="clear";
+
+        $id = \models\Users::getUserId();
+        $model['userName'] = \models\Users::getNameForUser($id);
+
+        $this->render($model,
+            array(
+                'nameView'=>'access_denied'
             )
         );
     }

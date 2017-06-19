@@ -4,29 +4,18 @@ use models\Products;
 
 class CassaController extends Controller
 {
-    public function actionIndex()
-    {
-
-        $modelProduct = Products::getProductList();
-
-        $this->render($modelProduct,
-            array(
-                'nameView'=>'productEdit'
-            )
-        );
-
-        return true;
+    public function actionIndex(){
+        $modelProduct['product'] = Products::getProductList();
+        $modelProduct['cart'] =Products::getProductList();
+        $this->render($modelProduct);
     }
 
-    public function actionEdit($id){
+    public function actionBack($id){
         var_dump($id);
     }
 
-    public function actionView($id)
-    {
-
-        return true;
-
+    public function actionClose(){
+        var_dump(2);
     }
 
 }

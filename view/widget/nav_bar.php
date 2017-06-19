@@ -54,7 +54,7 @@
                     <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
                 </a>
                 <ul class="dropdown-menu dropdown-user">
-                    <li><a href="#"><i class="fa fa-user fa-fw"></i> Налаштування профіля</a>
+                    <li><a href="/setting"><i class="fa fa-user fa-fw"></i> Налаштування профіля</a>
                     </li>
                     <li><a href="#"><i class="fa fa-gear fa-fw"></i> Доступ</a>
                     </li>
@@ -88,7 +88,7 @@
                 <a href="/statistic"><i class="fa fa-bar-chart-o fa-fw"></i> Статистика</a>
             </li>
             <li>
-                <a href="forms.html"><i class="fa fa-archive fa-fw"></i> Продукти</a>
+                <a href="/product"><i class="fa fa-archive fa-fw"></i> Продукти</a>
             </li>
             <li>
                 <a href="#"><i class="fa fa-shopping-basket"></i> Продажі<span class="fa arrow"></span></a>
@@ -106,13 +106,10 @@
                 <a href="#"><i class="fa fa-truck"></i> Поставка<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
                     <li>
-                        <a href="#"><i class="fa fa-clipboard"></i> Список поставок</a>
+                        <a href="/purchases"><i class="fa fa-clipboard"></i> Список поставок</a>
                     </li>
                     <li>
-                        <a href="#"><i class="fa fa-file-o"></i> Відкриті сесії</a>
-                    </li>
-                    <li>
-                        <a href="#"><i class="fa fa-file"></i> Закриті сесії</a>
+                        <a href="/purchases/productList"><i class="fa fa-file-o"></i> Продукти в поставках</a>
                     </li>
                     <li>
                         <a href="/base/"><i class="fa fa-user" aria-hidden="true"></i> Поставщики</a>
@@ -126,7 +123,7 @@
                <li>
                 <a href="#"><i class="fa fa-wrench fa-fw"></i> Акаунт<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
-                    <li><a href="#"><i class="fa fa-user fa-fw"></i> Налаштування профіля</a>
+                    <li><a href="/setting"><i class="fa fa-user fa-fw"></i> Налаштування профіля</a>
                     </li>
                     <li><a href="#"><i class="fa fa-gear fa-fw"></i> Доступ</a>
                     </li>

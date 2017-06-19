@@ -4,7 +4,7 @@ use view\widget\Table;
 <div id="page-wrapper">
     <div class="row">
         <div class="col-lg-12">
-            <h1 class="page-header">Продукти</h1>
+            <h1 class="page-header">Список продуктів</h1>
         </div>
         <!-- /.col-lg-12 -->
     </div>
@@ -13,11 +13,15 @@ use view\widget\Table;
         <div class="col-lg-12">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                   Перелік продукції
+                    Інформація про продукти та їх поставки
                 </div>
                 <!-- /.panel-heading -->
                 <div class="panel-body">
-                    <?php $tableProduct = new Table($model->fetchAll()); ?>
+
+                <div class="row">
+
+                    <?php if (isset($model['product'])):?>
+                    <?php $tableProduct = new Table($model['product']); ?>
 
                     <?php $tableProduct->field(['label'=>'Назва', 'key'=>'product_name']);?>
 
@@ -32,14 +36,16 @@ use view\widget\Table;
                             ['key'=>'id', 'value'=>' <a href="/product/cart/{{key}}"><i class="fa fa-cart-arrow-down" aria-hidden="true"></i></a> '],
                         ]
                     ]);
-
                     ;?>
-
                     <?php  $tableProduct->echo();?>
-
-                </div>
                 <!-- /.panel-body -->
-            </div>
+                    <?php  endif;?>
+
+                    <?php if (!isset($model['product'])):?>
+
+                        <h5>Дана поставка не містить поки продуктів!</h5>
+                    <?php  endif;?>
+                </div>
             <!-- /.panel -->
         </div>
         <!-- /.col-lg-12 -->

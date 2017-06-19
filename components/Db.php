@@ -2,6 +2,13 @@
 namespace  components;
 class Db
 {
+    private  static $typeForPrepare=[
+        'str'=>  \PDO::PARAM_STR,
+        'int'=>  \PDO::PARAM_INT,
+        'bool'=>  \PDO::PARAM_BOOL,
+        'float'=>  \PDO::PARAM_STR,
+    ];
+
     public static function getConnection()
     {
         $params = include(ROOT . '/config/db_params.php');
@@ -20,17 +27,25 @@ class Db
      * @return - boolean
      *
      */
-    public static function queryExecute($query){
+    public static function queryExecuteToArray($query, array $params=array()){
         $db = self::getConnection();
-        $queryResult = $db->query($query);
-        $result = $db->prepare($queryResult);
 
-        return $result->execute();
+        $outputPrepare = $db->prepare($query);
 
+        foreach ($params as $name=>$paramsForValue){
+            $type = in_array($paramsForValue['type'], self::$typeForPrepare) ? self::$typeForPrepare[$paramsForValue['type']] : self::$typeForPrepare['str'];
+            $outputPrepare->bindValue($name,$paramsForValue['value'], $type);
+        }
+
+        //var_dump($outputPrepare);
+        $outputPrepare->execute();
+       // var_dump($outputPrepare, $outputPrepare->errorInfo());
+
+        return $outputPrepare->fetchAll();
     }
 
 
-    /*
+    /**
      * @function  - призначена для виконня sql запиту і поверннея резульатата виконання
      *
      * @$query  - sql запит
@@ -47,10 +62,13 @@ class Db
 
         $result = $db->query($query);
 
-
         $fetchMod = $assoc ? \PDO::FETCH_ASSOC : \PDO::FETCH_NUM;
-        $result->setFetchMode($fetchMod);
-        $result = $result->fetchAll();
+
+        if (!is_bool($result)) {
+            $result->setFetchMode($fetchMod);
+            $result = $result->fetchAll();
+        }
+
 
         return $first ? self::recursArrayShift($result) : $result;
 

@@ -9,14 +9,18 @@ class Users
     const TELLER_ROLE_ID = 3;
 
 
-
-    public static function validationPassword($idUser, $password)
+    /**
+     * @param $idUser
+     * @param $password
+     * @param bool $just потрібно добавляти дані до Cookie та сесій
+     * @return bool
+     */
+    public static function validationPassword($idUser, $password, $just = false)
     {
         $query = "SELECT IS_VALID_PASSWORD($idUser, '$password');";
         $validPassword = Db::queryReturn($query, true);
 
-
-
+        if ($just) return $validPassword;
 
         if($validPassword) {
 
@@ -55,6 +59,7 @@ class Users
     }
 
     public static function logOut(){
+
         unset($_SESSION['id']);
         setcookie("id", '', time() - 3600000, "/");
         setcookie("role", '', time() - 3600000, "/");
@@ -76,7 +81,7 @@ class Users
         if (isset($_SESSION['id']))
             $id = $_SESSION['id'];
         else
-            $id=$_COOKIE['id'];
+            $id = $_COOKIE['id'];
 
         return $id;
     }
@@ -127,8 +132,21 @@ class Users
 
     }
     public static function insertMessages($userId, $messages){
-        $sql='INSERT INTO `notes` ( `user_id`, `date`, `content`) VALUES ('.$userId.', '.time().', "'.$messages.'");';
-        $db = DB::getConnection();
-        return $db->query($sql);
+        $sql='INSERT INTO `notes` ( `user_id`, `date`, `content`) VALUES (:userId, :time_notes, :messages);';
+        return DB::queryExecuteToArray($sql, array(
+                ':userId'=>[ 'value'=>$userId, 'type'=>'int'],
+                ':time_notes'=>[ 'value'=>time(), 'type'=>'int'],
+                ':messages'=>['value'=>$messages, 'type'=>'str'],
+                )
+        );
+    }
+    public static function updatePassword($userId, $password){
+
+        $sql='UPDATE users SET password=:new_password WHERE id = :userId;';
+        return DB::queryExecuteToArray($sql, array(
+                ':userId'=>[ 'value'=>(int)$userId, 'type'=>'int'],
+                ':new_password'=>[ 'value'=>md5($password), 'type'=>'str'],
+            )
+        );
     }
 }

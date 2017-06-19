@@ -17,17 +17,34 @@ use view\widget\Table;
                 </div>
                 <!-- /.panel-heading -->
                 <div class="panel-body">
-                    <?php $tableProduct = new Table(); var_dump($model);?>
+                <div class="row">
+                    <div class="col-lg-4  col-md-offset-4">
+                        <a href="/base/create/" class="btn btn-lg btn-success btn-block">Добавити нову базу</a>
+                    </div>
+                </div>
+                    <div class="col-lg-12" style="margin-top: 20px;">
+                    <?php $tableProduct = new Table($model); ?>
 
-                    <?php $tableProduct->field(['label'=>'Найменування продукта',  'value'=>$model->fetchAll()]);?>
 
-                    <?php $tableProduct->field(['label'=>'Ціна',  'value'=>$model->fetchAll(PDO::FETCH_COLUMN, 1)]);?>
 
-                    <?php $tableProduct->field(['label'=>'', 'type'=>'button', 'icon'=>'','value'=>'product/'.$model->fetchAll(PDO::FETCH_COLUMN, 0),]);?>
+                    <?php $tableProduct->field(['label'=>'Адрес', 'key'=>'address']);?>
 
-                    <?php $tableProduct->field(['label'=>'Дії', 'type'=>'href', 'icon'=>'fa fa-pencil-square-o', 'value'=>'']);?>
+                    <?php $tableProduct->field(['label'=>'Найменування бази', 'key'=>'name']);?>
+
+                    <?php $tableProduct->field(['label'=>'Телефон директора', 'key'=>'directory_phone']);?>
+
+                    <?php $tableProduct->field(['label'=>'Контактний телефон', 'key'=>'contact_phone']);?>
+
+                    <?php $tableProduct->field(['label'=>'Дії',
+                                                'key'=>[['key'=>'id_base', 'value'=>'<a href="/base/edit/{{key}}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> '],
+                                                        ['key'=>'id_base', 'value'=>'<a href="/base/delete/{{key}}"><i class="delete fa fa-trash-o" aria-hidden="true"></i></a> '],
+                                                ]
+                                                ]);
+
+                    ;?>
 
                     <?php  $tableProduct->echo();?>
+                    </div>
                 </div>
                 <!-- /.panel-body -->
             </div>
