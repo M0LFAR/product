@@ -15,9 +15,6 @@ class Table
 
     public function field(array $params){
 
-        $params['head'];
-        $params['type'];
-        $params['icon'];
 
         if (isset($params['label']))
             array_push($this->head, $params['label']);
