@@ -21,16 +21,7 @@ spl_autoload_register(function ($class_name) {
 
 });
 
-function d($modelProduct='print', $print=false){
 
- if ($modelProduct=='print')   {
-     var_dump('here');
- }
-else {
-    var_dump($modelProduct);
-}
-    return$print?exit():'';
-}
 
 $router = new Router();
 $router->run();
